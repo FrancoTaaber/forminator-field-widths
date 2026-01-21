@@ -1,0 +1,177 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: PHP Lint & PHPCS
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['7.4', '8.0', '8.1', '8.2']
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer, phpcs
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: PHP Syntax Check
+        run: find . -name "*.php" -not -path "./vendor/*" -not -path "./tests/*" | xargs -n1 php -l
+
+      - name: Install WordPress Coding Standards
+        if: matrix.php-version == '8.1'
+        run: |
+          composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global require wp-coding-standards/wpcs --no-interaction
+          phpcs --config-set installed_paths $(composer global config vendor-dir --absolute)/wp-coding-standards/wpcs
+
+      - name: Run PHPCS
+        if: matrix.php-version == '8.1'
+        run: phpcs --standard=phpcs.xml --ignore=vendor,tests .
+        continue-on-error: true
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Check for known vulnerabilities
+        run: |
+          # Basic security checks
+          echo "Checking for eval() usage..."
+          if grep -r "eval(" --include="*.php" . | grep -v "vendor/" | grep -v "tests/"; then
+            echo "Warning: eval() found in code"
+          fi
+          
+          echo "Checking for shell_exec() usage..."
+          if grep -r "shell_exec(" --include="*.php" . | grep -v "vendor/" | grep -v "tests/"; then
+            echo "Warning: shell_exec() found in code"
+          fi
+          
+          echo "Checking for system() usage..."
+          if grep -r "system(" --include="*.php" . | grep -v "vendor/" | grep -v "tests/"; then
+            echo "Warning: system() found in code"
+          fi
+          
+          echo "Security scan complete"
+
+  build:
+    name: Build & Verify
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+
+      - name: Build plugin
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Verify ZIP exists
+        run: |
+          if [ ! -f build/forminator-field-widths.zip ]; then
+            echo "Build failed - ZIP not created"
+            exit 1
+          fi
+          echo "Build successful!"
+          ls -la build/
+
+      - name: Verify ZIP contents
+        run: |
+          cd build
+          unzip -l forminator-field-widths.zip
+          echo ""
+          echo "Checking required files..."
+          unzip -p forminator-field-widths.zip forminator-field-widths/forminator-field-widths.php > /dev/null
+          unzip -p forminator-field-widths.zip forminator-field-widths/includes/class-plugin.php > /dev/null
+          echo "All required files present!"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: forminator-field-widths
+          path: build/forminator-field-widths.zip
+          retention-days: 5
+
+  test-install:
+    name: Test WordPress Installation
+    runs-on: ubuntu-latest
+    needs: build
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: forminator-field-widths
+          path: build/
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mysqli
+
+      - name: Install WordPress
+        run: |
+          # Download WordPress
+          curl -O https://wordpress.org/latest.tar.gz
+          tar xzf latest.tar.gz
+          
+          # Setup wp-config.php
+          cp wordpress/wp-config-sample.php wordpress/wp-config.php
+          sed -i "s/database_name_here/wordpress_test/" wordpress/wp-config.php
+          sed -i "s/username_here/root/" wordpress/wp-config.php
+          sed -i "s/password_here/root/" wordpress/wp-config.php
+          sed -i "s/localhost/127.0.0.1/" wordpress/wp-config.php
+
+      - name: Install plugin
+        run: |
+          mkdir -p wordpress/wp-content/plugins
+          cd wordpress/wp-content/plugins
+          unzip ../../../build/forminator-field-widths.zip
+          ls -la forminator-field-widths/
+          
+          # Verify main plugin file can be parsed
+          php -l forminator-field-widths/forminator-field-widths.php
+          echo "Plugin installed successfully!"

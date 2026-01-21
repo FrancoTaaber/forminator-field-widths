@@ -1,0 +1,130 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+
+      - name: Verify version matches tag
+        run: |
+          TAG_VERSION="${GITHUB_REF#refs/tags/v}"
+          PLUGIN_VERSION=$(grep "Version:" forminator-field-widths.php | head -1 | awk '{print $2}')
+          DEFINE_VERSION=$(grep "define.*FFW_VERSION" forminator-field-widths.php | grep -o "'[0-9.]*'" | tr -d "'")
+          
+          echo "Tag version: $TAG_VERSION"
+          echo "Plugin version: $PLUGIN_VERSION"
+          echo "Define version: $DEFINE_VERSION"
+          
+          if [ "$TAG_VERSION" != "$PLUGIN_VERSION" ]; then
+            echo "ERROR: Tag version ($TAG_VERSION) does not match plugin version ($PLUGIN_VERSION)"
+            exit 1
+          fi
+          
+          if [ "$TAG_VERSION" != "$DEFINE_VERSION" ]; then
+            echo "ERROR: Tag version ($TAG_VERSION) does not match FFW_VERSION constant ($DEFINE_VERSION)"
+            exit 1
+          fi
+          
+          echo "Version check passed!"
+
+      - name: Build plugin
+        run: |
+          chmod +x build.sh
+          ./build.sh
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Extract changelog
+        id: changelog
+        run: |
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          VERSION_NUM="${VERSION#v}"
+          
+          # Extract changelog for this version from readme.txt
+          CHANGELOG=$(sed -n "/= ${VERSION_NUM} =/,/= [0-9]/p" readme.txt | sed '1d;$d' | head -20)
+          
+          if [ -z "$CHANGELOG" ]; then
+            # Try to get from git commits since last tag
+            PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+            if [ -n "$PREV_TAG" ]; then
+              CHANGELOG=$(git log --oneline ${PREV_TAG}..HEAD --no-merges | head -10)
+            fi
+          fi
+          
+          if [ -z "$CHANGELOG" ]; then
+            CHANGELOG="Release ${VERSION}"
+          fi
+          
+          echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Generate checksums
+        run: |
+          cd build
+          sha256sum forminator-field-widths.zip > checksums.txt
+          md5sum forminator-field-widths.zip >> checksums.txt
+          cat checksums.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Forminator Field Widths ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## Forminator Field Widths ${{ steps.get_version.outputs.VERSION }}
+            
+            Add visual field width controls to Forminator forms. Easily customize field widths without writing CSS code.
+            
+            ### Changes
+            ${{ steps.changelog.outputs.CHANGELOG }}
+            
+            ### Installation
+            1. Download `forminator-field-widths.zip`
+            2. Go to WordPress Admin → Plugins → Add New → Upload Plugin
+            3. Upload the ZIP file and activate
+            4. Navigate to Forminator → Field Widths to configure
+            
+            ### Requirements
+            - WordPress 5.8 or higher
+            - PHP 7.4 or higher
+            - Forminator 1.20.0 or higher
+            
+            ### Checksums
+            ```
+            $(cat build/checksums.txt)
+            ```
+          files: |
+            build/forminator-field-widths.zip
+            build/checksums.txt
+          draft: false
+          prerelease: ${{ contains(steps.get_version.outputs.VERSION, 'beta') || contains(steps.get_version.outputs.VERSION, 'alpha') || contains(steps.get_version.outputs.VERSION, 'rc') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "Release workflow failed for version ${{ steps.get_version.outputs.VERSION }}"
+          echo "Please check the logs for details"

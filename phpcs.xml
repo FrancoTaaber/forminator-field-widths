@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<ruleset name="Forminator Field Widths">
+    <description>WordPress Coding Standards for Forminator Field Widths plugin</description>
+
+    <!-- What to scan -->
+    <file>.</file>
+
+    <!-- Exclude paths -->
+    <exclude-pattern>/vendor/*</exclude-pattern>
+    <exclude-pattern>/node_modules/*</exclude-pattern>
+    <exclude-pattern>/tests/*</exclude-pattern>
+    <exclude-pattern>/build/*</exclude-pattern>
+    <exclude-pattern>*.min.js</exclude-pattern>
+    <exclude-pattern>*.min.css</exclude-pattern>
+
+    <!-- How to scan -->
+    <arg value="sp"/>
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="8"/>
+
+    <!-- Show sniff codes in reports -->
+    <arg value="s"/>
+
+    <!-- Rules: WordPress Coding Standards -->
+    <config name="minimum_supported_wp_version" value="5.8"/>
+
+    <rule ref="WordPress">
+        <!-- Allow short array syntax -->
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+        <!-- Allow multiple classes in one file for related classes -->
+        <exclude name="WordPress.Files.FileName.InvalidClassFileName"/>
+    </rule>
+
+    <!-- Enforce WordPress-Extra for additional checks -->
+    <rule ref="WordPress-Extra">
+        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase"/>
+    </rule>
+
+    <!-- WordPress VIP rules for better security -->
+    <rule ref="WordPress.Security.ValidatedSanitizedInput"/>
+    <rule ref="WordPress.Security.NonceVerification"/>
+    <rule ref="WordPress.Security.EscapeOutput"/>
+
+    <!-- Plugin-specific prefixes -->
+    <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+        <properties>
+            <property name="prefixes" type="array">
+                <element value="ffw"/>
+                <element value="FFW"/>
+                <element value="Forminator_Field_Widths"/>
+                <element value="forminator_field_widths"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Text domain for i18n -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="forminator-field-widths"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!-- Disallow long arrays for readability -->
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+
+    <!-- Function length limit -->
+    <rule ref="Generic.Metrics.CyclomaticComplexity">
+        <properties>
+            <property name="complexity" value="20"/>
+            <property name="absoluteComplexity" value="30"/>
+        </properties>
+    </rule>
+
+    <!-- PHP compatibility -->
+    <config name="testVersion" value="7.4-"/>
+</ruleset>

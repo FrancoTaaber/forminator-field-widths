@@ -1,0 +1,389 @@
+# Copyright (C) 2025 Franco Taaber
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Forminator Field Widths 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/FrancoTaaber/forminator-field-widths/issues\n"
+"Last-Translator: Franco Taaber <info@francotaaber.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-01-21T00:00:00+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.8.1\n"
+"X-Domain: forminator-field-widths\n"
+
+#: forminator-field-widths.php:73
+msgid "Forminator Field Widths requires PHP %1$s or higher. Your current PHP version is %2$s. Please upgrade PHP to use this plugin."
+msgstr ""
+
+#: forminator-field-widths.php:91
+msgid "Forminator Field Widths requires Forminator plugin to be installed and activated."
+msgstr ""
+
+#: forminator-field-widths.php:96
+msgid "Forminator Field Widths requires Forminator %1$s or higher. Your current version is %2$s. Please update Forminator."
+msgstr ""
+
+#: forminator-field-widths.php:158
+msgid "Forminator Field Widths requires PHP %s or higher."
+msgstr ""
+
+#: forminator-field-widths.php:211
+msgid "Settings"
+msgstr ""
+
+#: includes/class-admin.php:87
+#: includes/class-admin.php:88
+msgid "Field Widths"
+msgstr ""
+
+#: includes/class-admin.php:191
+msgid "Field Width"
+msgstr ""
+
+#: includes/class-admin.php:192
+msgid "Set custom width for this field."
+msgstr ""
+
+#: includes/class-admin.php:193
+msgid "Width"
+msgstr ""
+
+#: includes/class-admin.php:194
+msgid "Enter width value"
+msgstr ""
+
+#: includes/class-admin.php:195
+msgid "Percentage"
+msgstr ""
+
+#: includes/class-admin.php:196
+msgid "Pixels"
+msgstr ""
+
+#: includes/class-admin.php:197
+msgid "Auto"
+msgstr ""
+
+#: includes/class-admin.php:198
+msgid "Mobile"
+msgstr ""
+
+#: includes/class-admin.php:199
+msgid "Tablet"
+msgstr ""
+
+#: includes/class-admin.php:200
+msgid "Desktop"
+msgstr ""
+
+#: includes/class-admin.php:201
+msgid "Responsive"
+msgstr ""
+
+#: includes/class-admin.php:202
+msgid "Presets"
+msgstr ""
+
+#: includes/class-admin.php:203
+msgid "Full Width"
+msgstr ""
+
+#: includes/class-admin.php:204
+msgid "Half Width"
+msgstr ""
+
+#: includes/class-admin.php:205
+msgid "One Third"
+msgstr ""
+
+#: includes/class-admin.php:206
+msgid "Quarter"
+msgstr ""
+
+#: includes/class-admin.php:207
+msgid "Custom Width"
+msgstr ""
+
+#: includes/class-admin.php:208
+msgid "Saving..."
+msgstr ""
+
+#: includes/class-admin.php:209
+msgid "Saved"
+msgstr ""
+
+#: includes/class-admin.php:210
+msgid "Error saving settings"
+msgstr ""
+
+#: includes/class-admin.php:211
+msgid "Clear All Widths"
+msgstr ""
+
+#: includes/class-admin.php:212
+msgid "Are you sure you want to clear all field width settings for this form?"
+msgstr ""
+
+#: includes/class-admin.php:213
+msgid "Export Settings"
+msgstr ""
+
+#: includes/class-admin.php:214
+msgid "Import Settings"
+msgstr ""
+
+#: includes/class-width-manager.php:97
+msgid "The specified form does not exist."
+msgstr ""
+
+#: includes/class-width-manager.php:313
+msgid "Invalid import data format."
+msgstr ""
+
+#: includes/class-ajax-handler.php:57
+msgid "Security verification failed."
+msgstr ""
+
+#: includes/class-ajax-handler.php:64
+msgid "You do not have permission to perform this action."
+msgstr ""
+
+#: includes/class-ajax-handler.php:79
+#: includes/class-ajax-handler.php:101
+#: includes/class-ajax-handler.php:129
+#: includes/class-ajax-handler.php:147
+#: includes/class-ajax-handler.php:163
+#: includes/class-ajax-handler.php:193
+#: includes/class-ajax-handler.php:216
+#: includes/class-ajax-handler.php:249
+msgid "Invalid form ID."
+msgstr ""
+
+#: includes/class-ajax-handler.php:107
+msgid "Invalid widths data."
+msgstr ""
+
+#: includes/class-ajax-handler.php:118
+#: includes/class-plugin.php:240
+msgid "Field widths saved successfully."
+msgstr ""
+
+#: includes/class-ajax-handler.php:135
+msgid "Invalid form or field ID."
+msgstr ""
+
+#: includes/class-ajax-handler.php:145
+msgid "Field width saved."
+msgstr ""
+
+#: includes/class-ajax-handler.php:159
+msgid "All field widths cleared."
+msgstr ""
+
+#: includes/class-ajax-handler.php:231
+msgid "Settings imported successfully."
+msgstr ""
+
+#: includes/class-ajax-handler.php:271
+msgid "Cache cleared successfully."
+msgstr ""
+
+#: includes/class-plugin-updater.php:271
+msgid "Add visual field width controls to Forminator forms. Easily customize field widths without writing CSS code."
+msgstr ""
+
+#: includes/class-plugin-updater.php:362
+msgid "Check for updates"
+msgstr ""
+
+#: admin/views/settings-page.php:17
+msgid "Field Widths Settings"
+msgstr ""
+
+#: admin/views/settings-page.php:26
+msgid "General"
+msgstr ""
+
+#: admin/views/settings-page.php:29
+msgid "Responsive"
+msgstr ""
+
+#: admin/views/settings-page.php:32
+msgid "Advanced"
+msgstr ""
+
+#: admin/views/settings-page.php:42
+msgid "General Settings"
+msgstr ""
+
+#: admin/views/settings-page.php:48
+msgid "Default Width Unit"
+msgstr ""
+
+#: admin/views/settings-page.php:49
+msgid "Choose the default unit for field widths."
+msgstr ""
+
+#: admin/views/settings-page.php:54
+msgid "Percentage (%)"
+msgstr ""
+
+#: admin/views/settings-page.php:57
+msgid "Pixels (px)"
+msgstr ""
+
+#: admin/views/settings-page.php:60
+msgid "Grid (12 columns)"
+msgstr ""
+
+#: admin/views/settings-page.php:68
+msgid "Enable Presets"
+msgstr ""
+
+#: admin/views/settings-page.php:69
+msgid "Show preset width buttons for quick selection."
+msgstr ""
+
+#: admin/views/settings-page.php:74
+msgid "Enable preset buttons"
+msgstr ""
+
+#: admin/views/settings-page.php:87
+msgid "Responsive Settings"
+msgstr ""
+
+#: admin/views/settings-page.php:93
+msgid "Enable Responsive Widths"
+msgstr ""
+
+#: admin/views/settings-page.php:94
+msgid "Allow different field widths for different screen sizes."
+msgstr ""
+
+#: admin/views/settings-page.php:99
+msgid "Enable responsive settings"
+msgstr ""
+
+#: admin/views/settings-page.php:107
+msgid "Mobile Breakpoint"
+msgstr ""
+
+#: admin/views/settings-page.php:108
+msgid "Screen width below which mobile styles apply."
+msgstr ""
+
+#: admin/views/settings-page.php:113
+#: admin/views/settings-page.php:124
+msgid "px"
+msgstr ""
+
+#: admin/views/settings-page.php:118
+msgid "Tablet Breakpoint"
+msgstr ""
+
+#: admin/views/settings-page.php:119
+msgid "Screen width below which tablet styles apply."
+msgstr ""
+
+#: admin/views/settings-page.php:129
+msgid "Mobile Full Width"
+msgstr ""
+
+#: admin/views/settings-page.php:130
+msgid "Automatically make all fields full width on mobile devices."
+msgstr ""
+
+#: admin/views/settings-page.php:135
+msgid "Force full width on mobile"
+msgstr ""
+
+#: admin/views/settings-page.php:148
+msgid "Advanced Settings"
+msgstr ""
+
+#: admin/views/settings-page.php:154
+msgid "Cache CSS"
+msgstr ""
+
+#: admin/views/settings-page.php:155
+msgid "Cache generated CSS for better performance."
+msgstr ""
+
+#: admin/views/settings-page.php:160
+msgid "Enable CSS caching"
+msgstr ""
+
+#: admin/views/settings-page.php:168
+msgid "Load CSS Inline"
+msgstr ""
+
+#: admin/views/settings-page.php:169
+msgid "Output CSS inline with each form instead of in the footer."
+msgstr ""
+
+#: admin/views/settings-page.php:174
+msgid "Output CSS inline"
+msgstr ""
+
+#: admin/views/settings-page.php:182
+msgid "Clear Cache"
+msgstr ""
+
+#: admin/views/settings-page.php:183
+msgid "Clear all cached CSS data."
+msgstr ""
+
+#: admin/views/settings-page.php:196
+msgid "Save Settings"
+msgstr ""
+
+#: admin/views/settings-page.php:204
+msgid "Forms with Custom Widths"
+msgstr ""
+
+#: admin/views/settings-page.php:214
+msgid "No forms have custom field widths configured yet. Edit a form in Forminator to set up field widths."
+msgstr ""
+
+#: admin/views/settings-page.php:221
+msgid "Form"
+msgstr ""
+
+#: admin/views/settings-page.php:222
+msgid "Fields"
+msgstr ""
+
+#: admin/views/settings-page.php:223
+msgid "Actions"
+msgstr ""
+
+#. translators: %d: number of fields
+#: admin/views/settings-page.php:242
+msgid "%d field"
+msgid_plural "%d fields"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/views/settings-page.php:249
+msgid "Edit"
+msgstr ""
+
+#: admin/views/settings-page.php:253
+msgid "Clear"
+msgstr ""
+
+#. translators: %s: developer name
+#: admin/views/settings-page.php:263
+msgid "Made with %s by Franco Taaber"
+msgstr ""
+
+#: admin/views/builder-integration.php:25
+msgid "Custom mobile width"
+msgstr ""
+
+#: admin/views/builder-integration.php:28
+msgid "Mobile:"
+msgstr ""
