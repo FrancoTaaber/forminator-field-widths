@@ -28,8 +28,8 @@ jobs:
       - name: Verify version matches tag
         run: |
           TAG_VERSION="${GITHUB_REF#refs/tags/v}"
-          PLUGIN_VERSION=$(grep "Version:" forminator-field-widths.php | head -1 | awk '{print $2}')
-          DEFINE_VERSION=$(grep "define.*FFW_VERSION" forminator-field-widths.php | grep -o "'[0-9.]*'" | tr -d "'")
+          PLUGIN_VERSION=$(grep -m1 "Version:" forminator-field-widths.php | sed 's/.*Version:[[:space:]]*//' | tr -d ' ')
+          DEFINE_VERSION=$(grep "define.*FFW_VERSION" forminator-field-widths.php | grep -oE "'[0-9]+\.[0-9]+\.[0-9]+'" | tr -d "'")
           
           echo "Tag version: $TAG_VERSION"
           echo "Plugin version: $PLUGIN_VERSION"
